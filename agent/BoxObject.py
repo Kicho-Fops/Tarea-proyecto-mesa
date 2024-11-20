@@ -17,6 +17,7 @@ class BoxObject(mesa.Agent):
             if (self.checkIfCarried()):
                 self.move()
                 
+                
         def checkIfCarried(self):
             
             things = self.model.grid.get_cell_list_contents([self.pos])

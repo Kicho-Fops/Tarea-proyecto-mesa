@@ -9,6 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from agent.RobotAgent import RobotAgent
 from agent.BoxObject import BoxObject
 from agent.PalletObject import PalletObject
+from mesa.datacollection import DataCollector
 
 
 class ShopModel(mesa.Model):
@@ -19,6 +20,15 @@ class ShopModel(mesa.Model):
         self.num_pallets = P
         self.schedule = mesa.RandomActivation(self)
         self.grid = mesa.MultiGrid(width, height, True)
+        
+        
+        # Correccion de error marciano
+        self.datacollector = DataCollector(
+            model_reporters={"NumRobots": lambda m: m.num_robot},
+            agent_reporters={"Pos": "pos"}  # Example of agent reporting
+        )
+
+        
         
         # Crear los Agentes
         
@@ -68,6 +78,7 @@ class ShopModel(mesa.Model):
                     break
         
     def step(self):
+        self.datacollector.collect(self)
         self.schedule.step()
         
         
